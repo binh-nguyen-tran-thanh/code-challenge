@@ -8,6 +8,7 @@ const WalletPage: React.FC<Props> = (props: Props) => {
   const balances = useWalletBalances();
   const prices = usePrices();
 
+  // Can be extracted to a separate custom hook if it's reusable in some other components
   const sortedBalances = useMemo(() => {
     const walletWithValidPriority = balances.filter(
       (balance: WalletBalance) => {
