@@ -18,6 +18,11 @@ export const setError = (message: string, level: TErrorLevel) => {
   errorLevel.set(level);
 };
 
+export const setSuccessMessage = (message: string) => {
+  errorState.set(message);
+  errorLevel.set('success');
+};
+
 export const clearError = () => {
   errorState.set('');
   errorLevel.set('info');

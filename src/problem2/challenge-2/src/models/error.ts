@@ -1,1 +1,1 @@
-export type TErrorLevel = 'info' | 'warning' | 'error';
+export type TErrorLevel = 'info' | 'warning' | 'error' | 'success';
