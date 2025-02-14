@@ -2,13 +2,11 @@
 */**/dist/
 */**/build/
 */**/coverage/
-*/**/lib/
 */**/temp/
 */**/tmp/
 */**/logs/
 */**/out/
 */**/target/
-*/**/public/
 */**/bin/
 */**/deploy/
 */**/release/
