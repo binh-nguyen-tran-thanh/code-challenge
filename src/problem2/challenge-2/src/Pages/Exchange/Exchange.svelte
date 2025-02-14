@@ -5,7 +5,6 @@
   import { tokenRateStore } from './store';
 
   const fetchTokenRates = async () => {
-    console.log('Fetching token rates...');
     const res = await getTokenRates();
 
     if (res.data.length) {
