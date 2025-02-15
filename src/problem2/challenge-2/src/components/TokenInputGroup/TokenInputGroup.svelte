@@ -8,20 +8,24 @@
     amount = $bindable(),
     disabledAmountInput = false,
     onUpdate,
-    token
+    token,
+    formId = 'token'
   }: {
     amount: number;
     onUpdate: (token: string) => void;
     token: TToken | null;
     disabledAmountInput?: boolean;
+    formId?: string;
   } = $props();
+
+  $inspect(token);
 </script>
 
 <figure class="relative w-52 space-y-2 h-full">
   <div>
     <Button
       class="rounded-e-none whitespace-nowrap border border-e-0 border-primary-700"
-      id="sourceToken"
+      id={formId}
     >
       <img
         class="h-5 w-5 rounded-full me-2"
@@ -31,7 +35,7 @@
       {token?.currency}
       <ChevronDownOutline class="w-2.5 h-2.5 ms-2.5" />
     </Button>
-    <Dropdown triggeredBy="#sourceToken" classContainer="w-40" placement="top">
+    <Dropdown triggeredBy={`#${formId}`} classContainer="w-40" placement="top">
       <div class="flex flex-col max-h-96 overflow-y-auto">
         {#each $tokenRateStore as tokenItem}
           <DropdownItem
