@@ -1,12 +1,13 @@
 <script lang="ts">
   import type { TToken } from '@src/models/token';
   import { tokenRateStore } from '@src/Pages/Exchange/store';
-  import { Button } from 'flowbite-svelte';
+  import { Button, Tooltip } from 'flowbite-svelte';
   import { AtomOutline, ArrowsRepeatOutline } from 'flowbite-svelte-icons';
   import { form, field } from 'svelte-forms';
   import { min, required } from 'svelte-forms/validators';
   import TokenInputGroup from '../TokenInputGroup/TokenInputGroup.svelte';
   import ConfirmModal from '../ConfirmModal/ConfirmModal.svelte';
+  import PreviewTable from '../PreviewTable/PreviewTable.svelte';
 
   let { onExchange } = $props();
 
@@ -40,7 +41,16 @@
     exchangeForm.reset();
   };
 
+  const handleSwap = () => {
+    const sourceTokenValue = $sourceToken.value;
+    const targetTokenValue = $targetToken.value;
+
+    sourceToken.set(targetTokenValue);
+    targetToken.set(sourceTokenValue);
+  };
+
   $effect(() => {
+    console.info('Change ?');
     const foundSourceTokenInfo =
       $tokenRateStore.find((token) => token.currency === $sourceToken.value) ??
       null;
@@ -65,9 +75,13 @@
     onUpdate={(currency) => sourceToken.set(currency)}
     bind:amount={$sourceTokenAmount.value}
     token={sourceTokenInfo}
+    formId="sourceToken"
   />
-  <div class="flex flex-col w-32 items-center justify-center">
-    <ArrowsRepeatOutline class="w-5 h-5" />
+  <div class="flex flex-col w-32 items-center justify-center gap-2">
+    <Button id="swap" on:click={handleSwap}>
+      <ArrowsRepeatOutline class="w-5 h-5" />
+    </Button>
+    <Tooltip triggeredBy="#swap">Swap</Tooltip>
     <div>
       1 : {exchangeRate.toFixed(4)}
     </div>
@@ -76,6 +90,7 @@
     onUpdate={(currency) => targetToken.set(currency)}
     bind:amount={$targetTokenAmount.value}
     token={targetTokenInfo}
+    formId="targetToken"
     disabledAmountInput
   />
 </section>
@@ -90,4 +105,13 @@
   Exchange
 </Button>
 
-<ConfirmModal bind:open={openConfirmModal} onSuccess={handleConfirm} />
+<ConfirmModal bind:open={openConfirmModal} onSuccess={handleConfirm}>
+  <PreviewTable
+    {sourceTokenInfo}
+    {targetTokenInfo}
+    {exchangeRate}
+    sourceAmount={$sourceTokenAmount.value}
+    targetAmount={$targetTokenAmount.value}
+  />
+  <br />
+</ConfirmModal>
